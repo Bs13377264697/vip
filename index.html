@@ -3,60 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>点确定复制口令</title>
+    <title>复制功能示例</title>
     <style>
         /* 自定义弹窗样式 */
-        .jtone {
-	position:relative;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid white;
-	border-bottom:12px solid transparent;
-}
-.jtone::before {
-	content:"";
-	position:absolute;
-	top:-12px;
-	left:-13px;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid #fab189;
-	border-bottom:12px solid transparent;
-}
-        .jttwo {
-	position:relative;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid white;
-	border-bottom:12px solid transparent;
-}
-.jttwo::before {
-	content:"";
-	position:absolute;
-	top:-12px;
-	left:-13px;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid #fa9b7e;
-	border-bottom:12px solid transparent;
-}
-        .hidden {
-            display: none;
-        }
-
-        .copy-tip {
-	display:flex;
-	justify-content:space-around;
-	align-items:center;/*	background:linear-gradient(to right,#f9c492,#fb6a65);
-	color:white;*/
-
-	font-size:15px;
-	height:24px;
-}
         .modal {
             display: none;
             position: fixed;
@@ -83,9 +32,7 @@
 
         /* 弹窗标题样式 */
         .modal-title {
-            
-        font-size: 29px;
-        margin-top: 2px;
+            font-size: 24px;
             margin-bottom: 20px;
             color: #333;
             font-family: 'Arial', sans-serif;
@@ -99,38 +46,34 @@
             font-family: 'Arial', sans-serif;
         }
 
+        /* 图片样式 */
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
         /* 按钮样式 */
-  /* 优化按钮样式 */
-.modal-button {
-    color: white; /* 改变文字颜色为白色 */
-    margin-top: 15px;
-    margin-bottom:0px;
-    font-size: 29px; /* 改变字体大小 */
-    padding: 12px 50px; /* 改变内边距 */
-    border-radius: 15px; /* 改变边框圆角 */
-    background: linear-gradient(145deg, #6e7ebd, #0099ff); /* 使用渐变色背景 */
-    border: none; /* 去掉边框 */
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2), -4px -4px 6px rgba(255, 255, 255, 0.5); /* 添加立体阴影效果 */
-    transition: all 0.3s ease; /* 添加过渡动画 */
-    cursor: pointer;
-    -webkit-appearance: none; /* 禁用安卓设备上的默认样式 */
-    outline: none; /* 去掉点击后的聚焦边框 */
-}
+        .modal-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50px; /* 圆角按钮 */
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* 增加按钮阴影 */
+            transition: all 0.3s ease;
+        }
 
-.modal-button:hover {
-    background: linear-gradient(145deg, #5a6e9c, #6e7ebd); /* 反转渐变色 */
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3), -4px -4px 10px rgba(255, 255, 255, 0.7); /* 增加悬停时的阴影效果 */
-    transform: translateY(-3px); /* 按钮上浮效果 */
-}
-
-.modal-button:focus {
-    outline: none; /* 去掉点击后的聚焦边框 */
-}
-
-
-
-
-
+        /* 按钮悬停效果 */
+        .modal-button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px); /* 按钮上浮效果 */
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* 增加阴影 */
+        }
 
         /* 弹窗显示动画 */
         @keyframes fadeIn {
@@ -143,88 +86,6 @@
                 transform: translateY(0);
             }
         }
-
-        /* SweetAlert 风格的外圈和打钩动画 */
-        .checkmark-container {
-            position: relative;
-            width: 100px; /* 增加圆圈和√的大小 */
-            height: 100px;
-            background-color: transparent;
-            border-radius: 50%;
-            border: 5px solid #4CAF50;
-            animation: circleAnimation 1s ease-out forwards;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-    .toast {
-    visibility: hidden;
-    min-width: 250px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 10px;
-    padding: 16px 20px;
-    position: fixed;
-    z-index: 1000; /* 保证显示在最前 */
-    left: 50%;
-    top: 50%; /* 使提示框垂直居中 */
-    transform: translate(-50%, -50%); /* 调整位置，使其精确居中 */
-    font-size: 17px;
-    opacity: 0;
-    transition: opacity 0.5s, visibility 0.5s;
-}
-
-.toast.show {
-    visibility: visible;
-    opacity: 1;
-}
-
-        /* 圆圈闭合动画 */
-        @keyframes circleAnimation {
-            0% {
-                transform: scale(0);
-                border-width: 5px;
-            }
-            70% {
-                transform: scale(1.2);
-                border-width: 5px;
-            }
-            100% {
-                transform: scale(1);
-                border-width: 5px;
-            }
-        }
-
-        /* 打钩图标样式 */
-        .checkmark-path {
-            fill: transparent;
-            stroke: #4CAF50;
-            stroke-width: 6; /* 增加线条粗细 */
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 200; /* 设置路径长度 */
-            stroke-dashoffset: 200; /* 初始状态隐藏路径 */
-            animation: drawCheckmark 2s ease-out forwards;
-        }
-
-        /* 打钩图标逐步显示的动画 */
-        @keyframes drawCheckmark {
-            0% {
-                stroke-dashoffset: 200;
-            }
-            30% {
-                stroke-dashoffset: 150; /* 从下到上绘制，显示第一部分 */
-            }
-            60% {
-                stroke-dashoffset: 100; /* 绘制过程中上部分逐渐绘制 */
-            }
-            100% {
-                stroke-dashoffset: 0; /* 完全显示√ */
-            }
-        }
-
     </style>
     <script>
         // 判断是否在微信环境中
@@ -245,34 +106,14 @@
             }
         }
 
-        // 显示Toast
-        function showToast(message, duration) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message; // 设置显示的文本
-            toast.className = "toast show"; // 显示Toast
-
-            // 自动隐藏 Toast
-            setTimeout(function () {
-                toast.className = toast.className.replace("show", ""); // 隐藏Toast
-            }, duration);
-        }
-
         window.onload = function () {
             if (isWeChat()) {
                 // 显示自定义弹窗
                 const modal = document.getElementById("myModal");
                 const btnConfirm = document.getElementById("confirmBtn");
-                const checkmarkContainer = document.getElementById("checkmarkContainer");
 
                 // 显示弹窗
                 modal.style.display = "flex";
-
-                // 成功动画显示
-                setTimeout(function () {
-                    checkmarkContainer.style.animation = 'circleAnimation 1s ease-out forwards';
-                    const checkmarkPath = document.getElementById("checkmarkPath");
-                    checkmarkPath.style.animation = 'drawCheckmark 2s ease-out forwards';
-                }, 500);
 
                 // 处理确认按钮点击
                 btnConfirm.onclick = function () {
@@ -290,15 +131,13 @@
                     document.body.removeChild(tempInput);
 
                     // 提示复制成功
-                    showToast("现在去打开「唯品会」APP查看", 3000);
+                    alert("复制成功！已复制商品口令 打开唯品会App下单即可");
 
-                  // 延迟5秒调用微信的关闭窗口方法
-    setTimeout(function () {
-        setupCloseWindow();
-    }, 3000); // 延迟5秒（5000毫秒）
+                    // 调用微信的关闭窗口方法
+                    setupCloseWindow();
 
-    // 关闭弹窗
-    modal.style.display = "none";
+                    // 关闭弹窗
+                    modal.style.display = "none";
                 };
             } else {
                 // 提示用户当前不是在微信内打开页面
@@ -308,26 +147,15 @@
     </script>
 </head>
 <body>
-    <!-- Toast 提示框 -->
-    <div id="toast" class="toast">操作成功！</div>
+    <!--h1>复制功能示例</h1>
+    <p>打开网页后，点击“确定”会将'6:/^v8"aW3XEEmGGsA^'复制到剪切板，并关闭当前网页。</p>
 
+    < 自定义弹窗 -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <div id="checkmarkContainer" class="checkmark-container">
-                <!-- 使用SVG绘制逐步显示的打钩 -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 50 50">
-                    <path id="checkmarkPath" class="checkmark-path" d="M12 25L20 33L38 12" />
-                </svg>
-            </div>
-            <h2 class="modal-title">购物口令复制成功</h2>
-
-            <div id="copy-tip-ios" class="copy-tip hidden">
-                <span>打开&nbsp;<img style="width:36px;height:13px" src="favicon.png"></img>&nbsp;App</span>
-                <span class="jtone"></span>
-                <span>立即查看</span>
-                <span class="jttwo"></span>
-                <span>下单得返利</span>
-            </div>
+            <h2 class="modal-title">温馨提示</h2>
+            <img src="" alt="教程图片">
+            <p>成功复制口令》打开App下单</p>
             <button id="confirmBtn" class="modal-button">确定</button>
         </div>
     </div>
