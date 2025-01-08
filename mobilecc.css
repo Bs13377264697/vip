@@ -1,0 +1,198 @@
+  /* 自定义弹窗样式 */
+        .jtone {
+            position:relative;
+            width:0;
+            height:0;
+            border-top:12px solid transparent;
+            border-left:10px solid white;
+            border-bottom:12px solid transparent;
+        }
+        .jtone::before {
+            content:"";
+            position:absolute;
+            top:-12px;
+            left:-13px;
+            width:0;
+            height:0;
+            border-top:12px solid transparent;
+            border-left:10px solid #fab189;
+            border-bottom:12px solid transparent;
+        }
+        .jttwo {
+            position:relative;
+            width:0;
+            height:0;
+            border-top:12px solid transparent;
+            border-left:10px solid white;
+            border-bottom:12px solid transparent;
+        }
+        .jttwo::before {
+            content:"";
+            position:absolute;
+            top:-12px;
+            left:-13px;
+            width:0;
+            height:0;
+            border-top:12px solid transparent;
+            border-left:10px solid #fa9b7e;
+            border-bottom:12px solid transparent;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .copy-tip {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 15px;
+            height: 24px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 增加阴影效果 */
+            animation: fadeIn 0.3s ease-in-out; /* 弹窗渐显动画 */
+        }
+
+        .modal-title {
+            font-size: 29px;
+            margin-top: 2px;
+            margin-bottom: 20px;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 按钮样式 */
+        .modal-button {
+            color: white;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            font-size: 29px;
+            padding: 12px 50px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #6e7ebd, #0099ff);
+            border: none;
+            box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2), -4px -4px 6px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            -webkit-appearance: none;
+            outline: none;
+        }
+
+        .modal-button:hover {
+            background: linear-gradient(145deg, #5a6e9c, #6e7ebd);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3), -4px -4px 10px rgba(255, 255, 255, 0.7);
+            transform: translateY(-3px);
+        }
+
+        .modal-button:focus {
+            outline: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .checkmark-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: transparent;
+            border-radius: 50%;
+            border: 5px solid #4CAF50;
+            animation: circleAnimation 1s ease-out forwards;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            padding: 16px 20px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @keyframes circleAnimation {
+            0% {
+                transform: scale(0);
+                border-width: 5px;
+            }
+            70% {
+                transform: scale(1.2);
+                border-width: 5px;
+            }
+            100% {
+                transform: scale(1);
+                border-width: 5px;
+            }
+        }
+
+        .checkmark-path {
+            fill: transparent;
+            stroke: #4CAF50;
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawCheckmark 2s ease-out forwards;
+        }
+
+        @keyframes drawCheckmark {
+            0% {
+                stroke-dashoffset: 200;
+            }
+            30% {
+                stroke-dashoffset: 150;
+            }
+            60% {
+                stroke-dashoffset: 100;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
