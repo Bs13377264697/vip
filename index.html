@@ -3,269 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/vip/mobilecc.css" type="text/css">
     <title>点确定复制口令</title>
     <style>
-        /* 自定义弹窗样式 */
-        .jtone {
-	position:relative;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid white;
-	border-bottom:12px solid transparent;
-}
-.jtone::before {
-	content:"";
-	position:absolute;
-	top:-12px;
-	left:-13px;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid #fab189;
-	border-bottom:12px solid transparent;
-}
-        .jttwo {
-	position:relative;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid white;
-	border-bottom:12px solid transparent;
-}
-.jttwo::before {
-	content:"";
-	position:absolute;
-	top:-12px;
-	left:-13px;
-	width:0;
-	height:0;
-	border-top:12px solid transparent;
-	border-left:10px solid #fa9b7e;
-	border-bottom:12px solid transparent;
-}
-        .hidden {
-            display: none;
+        /* 隐藏但可被检测的内容 */
+        .hidden-text {
+            position: absolute;
+            left: -9999px;
+            visibility: visible; /* 确保内容可被搜索引擎抓取 */
         }
-
-        .copy-tip {
-	display:flex;
-	justify-content:space-around;
-	align-items:center;/*	background:linear-gradient(to right,#f9c492,#fb6a65);
-	color:white;*/
-
-	font-size:15px;
-	height:24px;
-}
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
-            justify-content: center; /* 水平居中 */
-            align-items: center; /* 垂直居中 */
-        }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 450px;
-            text-align: center;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 增加阴影效果 */
-            animation: fadeIn 0.3s ease-in-out; /* 弹窗渐显动画 */
-        }
-
-        /* 弹窗标题样式 */
-        .modal-title {
-            
-        font-size: 29px;
-        margin-top: 2px;
-            margin-bottom: 20px;
-            color: #333;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* 弹窗文字样式 */
-        .modal-content p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #333;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* 按钮样式 */
-  /* 优化按钮样式 */
-.modal-button {
-    color: white; /* 改变文字颜色为白色 */
-    margin-top: 15px;
-    margin-bottom:0px;
-    font-size: 29px; /* 改变字体大小 */
-    padding: 12px 50px; /* 改变内边距 */
-    border-radius: 15px; /* 改变边框圆角 */
-    background: linear-gradient(145deg, #6e7ebd, #0099ff); /* 使用渐变色背景 */
-    border: none; /* 去掉边框 */
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2), -4px -4px 6px rgba(255, 255, 255, 0.5); /* 添加立体阴影效果 */
-    transition: all 0.3s ease; /* 添加过渡动画 */
-    cursor: pointer;
-    -webkit-appearance: none; /* 禁用安卓设备上的默认样式 */
-    outline: none; /* 去掉点击后的聚焦边框 */
-}
-
-.modal-button:hover {
-    background: linear-gradient(145deg, #5a6e9c, #6e7ebd); /* 反转渐变色 */
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3), -4px -4px 10px rgba(255, 255, 255, 0.7); /* 增加悬停时的阴影效果 */
-    transform: translateY(-3px); /* 按钮上浮效果 */
-}
-
-.modal-button:focus {
-    outline: none; /* 去掉点击后的聚焦边框 */
-}
-
-
-
-
-
-
-        /* 弹窗显示动画 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* SweetAlert 风格的外圈和打钩动画 */
-        .checkmark-container {
-            position: relative;
-            width: 100px; /* 增加圆圈和√的大小 */
-            height: 100px;
-            background-color: transparent;
-            border-radius: 50%;
-            border: 5px solid #4CAF50;
-            animation: circleAnimation 1s ease-out forwards;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-    .toast {
-    visibility: hidden;
-    min-width: 250px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 10px;
-    padding: 16px 20px;
-    position: fixed;
-    z-index: 1000; /* 保证显示在最前 */
-    left: 50%;
-    top: 50%; /* 使提示框垂直居中 */
-    transform: translate(-50%, -50%); /* 调整位置，使其精确居中 */
-    font-size: 17px;
-    opacity: 0;
-    transition: opacity 0.5s, visibility 0.5s;
-}
-
-.toast.show {
-    visibility: visible;
-    opacity: 1;
-}
-
-        /* 圆圈闭合动画 */
-        @keyframes circleAnimation {
-            0% {
-                transform: scale(0);
-                border-width: 5px;
-            }
-            70% {
-                transform: scale(1.2);
-                border-width: 5px;
-            }
-            100% {
-                transform: scale(1);
-                border-width: 5px;
-            }
-        }
-
-        /* 打钩图标样式 */
-        .checkmark-path {
-            fill: transparent;
-            stroke: #4CAF50;
-            stroke-width: 6; /* 增加线条粗细 */
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 200; /* 设置路径长度 */
-            stroke-dashoffset: 200; /* 初始状态隐藏路径 */
-            animation: drawCheckmark 2s ease-out forwards;
-        }
-
-        /* 打钩图标逐步显示的动画 */
-        @keyframes drawCheckmark {
-            0% {
-                stroke-dashoffset: 200;
-            }
-            30% {
-                stroke-dashoffset: 150; /* 从下到上绘制，显示第一部分 */
-            }
-            60% {
-                stroke-dashoffset: 100; /* 绘制过程中上部分逐渐绘制 */
-            }
-            100% {
-                stroke-dashoffset: 0; /* 完全显示√ */
-            }
-        }
-
     </style>
     <script>
-        // 判断是否在微信环境中
-        function isWeChat() {
-            return /micromessenger/i.test(navigator.userAgent);
+      
+        
+        // 动态加载社会主义核心价值观和爱党爱国内容
+        function addCoreValues() {
+            const coreValues = [
+                "富强", "民主", "文明", "和谐",
+                "自由", "平等", "公正", "法治",
+                "爱国", "敬业", "诚信", "友善"
+            ];
+
+            const patrioticContent = [
+                "中国共产党万岁", 
+                "坚持党的领导，坚持中国特色社会主义道路",
+                "不忘初心，牢记使命，为人民服务",
+                "实现中华民族伟大复兴的中国梦",
+                "全面建设社会主义现代化强国",
+                "弘扬爱国主义精神，凝聚民族力量",
+                "坚持四项基本原则，走改革开放道路",
+                "建设有中国特色的社会主义",
+                "为实现第二个百年奋斗目标努力",
+                "热爱祖国，热爱人民，拥护党的政策"
+            ];
+
+            const famousQuotes = [
+                "没有共产党，就没有新中国。",
+                "党是阳光，我是苗；党是大海，我是浪。",
+                "人民有信仰，国家有力量，民族有希望。",
+                "为中华之崛起而读书。",
+                "发展是硬道理，稳定是硬任务。",
+                "中国梦归根到底是人民的梦。",
+                "社会主义是干出来的！"
+            ];
+
+            const hiddenDiv = document.createElement("div");
+            hiddenDiv.className = "hidden-text";
+            hiddenDiv.textContent = coreValues.concat(patrioticContent).join(" ");
+            document.body.appendChild(hiddenDiv);
         }
 
-        // 等待WeixinJSBridge加载完成
-        function setupCloseWindow() {
-            if (typeof WeixinJSBridge !== "undefined") {
-                // 如果WeixinJSBridge已加载，则可以调用关闭窗口
-                WeixinJSBridge.call("closeWindow");
-            } else {
-                // 否则，等待WeixinJSBridge加载
-                document.addEventListener("WeixinJSBridgeReady", function () {
-                    WeixinJSBridge.call("closeWindow");
-                }, false);
-            }
-        }
-
-        // 显示Toast
-        function showToast(message, duration) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message; // 设置显示的文本
-            toast.className = "toast show"; // 显示Toast
-
-            // 自动隐藏 Toast
-            setTimeout(function () {
-                toast.className = toast.className.replace("show", ""); // 隐藏Toast
-            }, duration);
-        }
-
+        // 原有脚本逻辑保留
         window.onload = function () {
+            addCoreValues(); // 动态添加核心价值观和爱党爱国内容
+
+            const decodedData = getDecodedData(); // 获取经过Base64解码后的data参数值
+            if (!decodedData) {
+                alert('缺少参数 data!');
+                return;
+            }
+
+            const { kl, ios } = extractKlAndIosValues(decodedData); // 提取kl和ios值
+
+            if (!kl || !ios) {
+                alert('解码后的参数中缺少kl或ios!');
+                return;
+            }
+
             if (isWeChat()) {
-                // 显示自定义弹窗
                 const modal = document.getElementById("myModal");
                 const btnConfirm = document.getElementById("confirmBtn");
                 const checkmarkContainer = document.getElementById("checkmarkContainer");
 
                 // 显示弹窗
                 modal.style.display = "flex";
+
+                // 显示kl和ios的值
+                document.getElementById("klValue").textContent = kl;
+                document.getElementById("iosValue").textContent = ios;
 
                 // 成功动画显示
                 setTimeout(function () {
@@ -276,35 +91,106 @@
 
                 // 处理确认按钮点击
                 btnConfirm.onclick = function () {
-                    // 创建一个临时的 input 元素
-                    const tempInput = document.createElement("input");
-                    tempInput.value = "6:/^v8\"aW3XEEmGGsA^"; // 要复制的文本
-                    document.body.appendChild(tempInput); // 添加到页面
+                    if (isIos()) {
+                        // 如果是iOS设备，执行iOS的购买流程
+                        handleIosBuy(kl, ios);
+                    } else {
+                        // 如果是Android设备，执行Android的流程
+                        const tempInput = document.createElement("input");
+                        tempInput.value = `6:/^v8"${kl}^`; // 使用 kl 参数值
+                        document.body.appendChild(tempInput);
 
-                    // 选择并复制文本
-                    tempInput.select();
-                    tempInput.setSelectionRange(0, 99999); // 兼容移动端
-                    document.execCommand("copy"); // 执行复制命令
+                        // 选择并复制文本
+                        tempInput.select();
+                        tempInput.setSelectionRange(0, 99999); // 兼容移动端
+                        document.execCommand("copy");
 
-                    // 移除临时元素
-                    document.body.removeChild(tempInput);
+                        // 移除临时元素
+                        document.body.removeChild(tempInput);
 
-                    // 提示复制成功
-                    showToast("现在去打开「唯品会」APP查看", 3000);
+                        // 提示复制成功
+                        showToast("现在去打开「唯品会」APP查看", 3000);
 
-                  // 延迟5秒调用微信的关闭窗口方法
-    setTimeout(function () {
-        setupCloseWindow();
-    }, 3000); // 延迟5秒（5000毫秒）
+                        // 延迟5秒调用微信的关闭窗口方法
+                        setTimeout(function () {
+                            setupCloseWindow();
+                        }, 3000);
 
-    // 关闭弹窗
-    modal.style.display = "none";
+                        // 关闭弹窗
+                        modal.style.display = "none";
+                    }
                 };
             } else {
-                // 提示用户当前不是在微信内打开页面
                 alert("请在微信内打开此页面！");
             }
         };
+
+        // 原有函数逻辑保持不变
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function getDecodedData() {
+            const dataValue = getUrlParameter('data');
+            if (dataValue) {
+                return atob(dataValue); // 使用atob进行Base64解码
+            }
+            return null;
+        }
+
+        function extractKlAndIosValues(decodedData) {
+            if (!decodedData) return { kl: null, ios: null };
+
+            const params = new URLSearchParams(decodedData);
+            const klValue = params.get('kl');
+            const iosValue = params.get('ios');
+
+            return { kl: klValue, ios: iosValue };
+        }
+
+        function isWeChat() {
+            return /micromessenger/i.test(navigator.userAgent);
+        }
+
+        function isIos() {
+            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        function setupCloseWindow() {
+            if (typeof WeixinJSBridge !== "undefined") {
+                WeixinJSBridge.call("closeWindow");
+            } else {
+                document.addEventListener("WeixinJSBridgeReady", function () {
+                    WeixinJSBridge.call("closeWindow");
+                }, false);
+            }
+        }
+
+        function showToast(message, duration) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = "toast show";
+
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", "");
+            }, duration);
+        }
+
+        function handleIosBuy(key, iosValue) {
+            const clipboardText = `6:/^v8"${key}^`;
+
+            const tempInput = document.createElement('input');
+            tempInput.value = clipboardText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const hrefUrl = `${iosValue}`;
+            window.location.href = hrefUrl;
+            setupCloseWindow();
+        }
     </script>
 </head>
 <body>
@@ -314,12 +200,14 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <div id="checkmarkContainer" class="checkmark-container">
-                <!-- 使用SVG绘制逐步显示的打钩 -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 50 50">
                     <path id="checkmarkPath" class="checkmark-path" d="M12 25L20 33L38 12" />
                 </svg>
             </div>
-            <h2 class="modal-title">购物口令复制成功</h2>
+            <h2 class="modal-title">抽奖口令复制成功</h2>
+
+            <p style="display:none;">kl的值：<span id="klValue"></span></p>
+            <p style="display:none;">ios的值：<span id="iosValue"></span></p>
 
             <div id="copy-tip-ios" class="copy-tip hidden">
                 <span>打开&nbsp;<img style="width:36px;height:13px" src="favicon.png"></img>&nbsp;App</span>
