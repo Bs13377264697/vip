@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mobilecc.css" type="text/css">
+    <title>点确定复制口令</title>
+
+    <script>
+        // 获取URL中的参数并解码Base64
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 获取并解码data参数中的kl和ios值
+        function getDecodedData() {
+            const dataValue = getUrlParameter('data');
+            if (dataValue) {
+                // 解码Base64数据
+                const decodedData = atob(dataValue); // 使用atob进行Base64解码
+                return decodedData;
+            }
+            return null;
+        }
+
+        // 从解码后的data中提取kl和ios的值
+        function extractKlAndIosValues(decodedData) {
+            if (!decodedData) return { kl: null, ios: null };
+
+            const params = new URLSearchParams(decodedData); // 将解码后的字符串转换为URLSearchParams
+
+            const klValue = params.get('kl');
+            const iosValue = params.get('ios');
+
+            return { kl: klValue, ios: iosValue };
+        }
+
+        // 判断是否在微信环境中
+        function isWeChat() {
+            return /micromessenger/i.test(navigator.userAgent);
+        }
+
+        // 判断是否是iOS设备
+        function isIos() {
+            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        // 等待WeixinJSBridge加载完成
+        function setupCloseWindow() {
+            if (typeof WeixinJSBridge !== "undefined") {
+                WeixinJSBridge.call("closeWindow");
+            } else {
+                document.addEventListener("WeixinJSBridgeReady", function () {
+                    WeixinJSBridge.call("closeWindow");
+                }, false);
+            }
+        }
+
+        // 显示Toast
+        function showToast(message, duration) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message; // 设置显示的文本
+            toast.className = "toast show"; // 显示Toast
+
+            // 自动隐藏 Toast
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", ""); // 隐藏Toast
+            }, duration);
+        }
+
+        // iOS系统的购买流程
+        function handleIosBuy(key, iosValue) {
+            const clipboardText = `6:/^v8"${key}^`;
+
+            // 复制到剪切板
+            const tempInput = document.createElement('input');
+            tempInput.value = clipboardText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // 将ios值赋给hrefUrl
+            const hrefUrl = `${iosValue}`;
+            window.location.href = hrefUrl;
+            // 提示复制成功
+            setupCloseWindow();
+        }
+
+        window.onload = function () {
+            const decodedData = getDecodedData(); // 获取经过Base64解码后的data参数值
+
+            if (!decodedData) {
+                alert('缺少参数 data!');
+                return;
+            }
+
+            const { kl, ios } = extractKlAndIosValues(decodedData); // 提取kl和ios值
+
+            if (!kl || !ios) {
+                alert('解码后的参数中缺少kl或ios!');
+                return;
+            }
+
+            if (isWeChat()) {
+                const modal = document.getElementById("myModal");
+                const btnConfirm = document.getElementById("confirmBtn");
+                const checkmarkContainer = document.getElementById("checkmarkContainer");
+
+                // 显示弹窗
+                modal.style.display = "flex";
+
+                // 显示kl和ios的值
+                document.getElementById("klValue").textContent = kl;
+                document.getElementById("iosValue").textContent = ios;
+
+                // 成功动画显示
+                setTimeout(function () {
+                    checkmarkContainer.style.animation = 'circleAnimation 1s ease-out forwards';
+                    const checkmarkPath = document.getElementById("checkmarkPath");
+                    checkmarkPath.style.animation = 'drawCheckmark 2s ease-out forwards';
+                }, 500);
+
+                // 处理确认按钮点击
+                btnConfirm.onclick = function () {
+                    if (isIos()) {
+                        // 如果是iOS设备，执行iOS的购买流程
+                        handleIosBuy(kl, ios);
+                    } else {
+                        // 如果是Android设备，执行Android的流程
+                        const tempInput = document.createElement("input");
+                        tempInput.value = `6:/^v8"${kl}^`; // 使用 kl 参数值
+                        document.body.appendChild(tempInput);
+
+                        // 选择并复制文本
+                        tempInput.select();
+                        tempInput.setSelectionRange(0, 99999); // 兼容移动端
+                        document.execCommand("copy");
+
+                        // 移除临时元素
+                        document.body.removeChild(tempInput);
+
+                        // 提示复制成功
+                        showToast("现在去打开「唯品会」APP查看", 3000);
+
+                        // 延迟5秒调用微信的关闭窗口方法
+                        setTimeout(function () {
+                            setupCloseWindow();
+                        }, 3000);
+
+                        // 关闭弹窗
+                        modal.style.display = "none";
+                    }
+                };
+            } else {
+                alert("请在微信内打开此页面！");
+            }
+        };
+    </script>
+</head>
+<body>
+    <!-- Toast 提示框 -->
+    <div id="toast" class="toast">操作成功！</div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="checkmarkContainer" class="checkmark-container">
+                <!-- 使用SVG绘制逐步显示的打钩 -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 50 50">
+                    <path id="checkmarkPath" class="checkmark-path" d="M12 25L20 33L38 12" />
+                </svg>
+            </div>
+            <h2 class="modal-title">购物口令复制成功</h2>
+
+            <!-- 显示kl和ios值 -->
+        <p style="display:none;">kl的值：<span id="klValue"></span></p>
+<p style="display:none;">ios的值：<span id="iosValue"></span></p>
+
+            <div id="copy-tip-ios" class="copy-tip hidden">
+                <span>打开&nbsp;<img style="width:36px;height:13px" src="favicon.png"></img>&nbsp;App</span>
+                <span class="jtone"></span>
+                <span>立即查看</span>
+                <span class="jttwo"></span>
+                <span>下单得返利</span>
+            </div>
+            <button id="confirmBtn" class="modal-button">确定</button>
+        </div>
+    </div>
+</body>
+</html>
